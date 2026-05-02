@@ -1,0 +1,61 @@
+/* ==========================================================================
+   tokens.css — Design tokens (CSS custom properties only)
+   ========================================================================== */
+
+:root {
+  /* Brand Colors */
+  --saffron:       #FF6B00;
+  --blue:          #1A56DB;
+  --green:         #22C55E;
+  --gold:          #F5C518;
+  --bg:            #FFF8F0;
+  --dark:          #1C1C2E;
+  --text:          #3D3D55;
+  --card:          #FFFFFF;
+  --lavender:      #EEF0FB;
+  --red:           #EF4444;
+  --amber:         #F59E0B;
+  --muted:         #6B7280;
+
+  /* Border Radius */
+  --radius-sm:     8px;
+  --radius-md:     16px;
+  --radius-lg:     32px;
+  --radius-pill:   999px;
+
+  /* Shadows */
+  --shadow-sm:     0 2px 8px rgba(0, 0, 0, .08);
+  --shadow-md:     0 6px 24px rgba(0, 0, 0, .12);
+  --shadow-lg:     0 16px 48px rgba(0, 0, 0, .16);
+
+  /* Transitions */
+  --transition:    all .25s cubic-bezier(.22, 1, .36, 1);
+
+  /* Typography Scale */
+  --text-xs:       clamp(0.75rem, 1.5vw, 0.875rem);
+  --text-sm:       clamp(0.875rem, 1.8vw, 1rem);
+  --text-base:     clamp(1rem, 2vw, 1.125rem);
+  --text-lg:       clamp(1.125rem, 2.5vw, 1.25rem);
+  --text-xl:       clamp(1.25rem, 3vw, 1.5rem);
+  --text-2xl:      clamp(1.5rem, 3.5vw, 2rem);
+  --text-3xl:      clamp(2rem, 4vw, 2.5rem);
+  --text-4xl:      clamp(2.5rem, 5vw, 3.5rem);
+  --text-hero:     clamp(2.5rem, 6vw, 4rem);
+
+  /* Spacing */
+  --space-xs:      0.25rem;
+  --space-sm:      0.5rem;
+  --space-md:      1rem;
+  --space-lg:      1.5rem;
+  --space-xl:      2rem;
+  --space-2xl:     3rem;
+  --space-3xl:     4rem;
+  --space-4xl:     6rem;
+
+  /* Z-index layers */
+  --z-base:        1;
+  --z-dropdown:    10;
+  --z-sticky:      100;
+  --z-modal:       200;
+  --z-toast:       300;
+}
