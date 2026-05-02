@@ -15,10 +15,19 @@ let triggerElement = null;
 
 /**
  * Knowledge base — keyword groups mapped to answers.
- * ORDER MATTERS: more specific entries must come before entries whose keywords
- * are substrings of more specific phrases.
- * - "lost" entry before "register" (both match "I lost my voter id card")
- * - "polling day" entry before "polling/booth" (both match "When is polling day?")
+ *
+ * ORDER MATTERS — entries are checked top to bottom, first match wins.
+ * More specific / longer-phrase entries must come before entries whose
+ * keywords are substrings of those phrases:
+ *
+ *   "lost"          before "register"  → "I lost my voter id card" has "voter id"
+ *   "moved"         before "register"  → "change address on voter id" has "voter id"
+ *   "helpline"      before "eci"       → "contact ECI" has "eci"
+ *   "polling day"   before "polling"   → "When is polling day?" has "polling"
+ *
+ * Within each entry, keywords are sorted longest-first at match time,
+ * so multi-word phrases ("none of the above") beat single words ("nota").
+ *
  * @type {Array<{keywords: string[], answer: string}>}
  */
 const KNOWLEDGE_BASE = [
@@ -30,6 +39,11 @@ const KNOWLEDGE_BASE = [
     // Before "register" — "I lost my voter id card" contains "voter id"
     keywords: ['lost', 'id card', 'duplicate', 'replacement'],
     answer: 'If you lost your Voter ID apply for a duplicate at voters.eci.gov.in under the EPIC Reprint option. You can also use alternative documents like Aadhaar or Passport at the polling booth. 🪪'
+  },
+  {
+    // Before "register" — "change address on voter id" contains "voter id"
+    keywords: ['moved', 'shifted', 'new city', 'change address'],
+    answer: 'If you moved cities you need to re-register at your new address. Submit Form 8A at voters.eci.gov.in to update your address on the Electoral Roll. 🏠'
   },
   {
     keywords: ['register', 'registration', 'voter id', 'enroll'],
@@ -50,11 +64,16 @@ const KNOWLEDGE_BASE = [
   {
     // Before "polling/booth" — "When is polling day?" contains "polling"
     keywords: ['polling day', 'voting day', 'election day', 'date'],
-    answer: 'Polling Day is announced by the Election Commission of India. Check eci.gov.in for the latest election schedule in your state. �'
+    answer: 'Polling Day is announced by the Election Commission of India. Check eci.gov.in for the latest election schedule in your state. 📅'
   },
   {
     keywords: ['polling', 'booth', 'where', 'location', 'station'],
-    answer: 'Find your polling booth at electoralsearch.eci.gov.in — enter your name or Voter ID. Polling stations are usually schools or community halls in your area. �'
+    answer: 'Find your polling booth at electoralsearch.eci.gov.in — enter your name or Voter ID. Polling stations are usually schools or community halls in your area. 📍'
+  },
+  {
+    // Before "eci" — "contact ECI" contains "eci"
+    keywords: ['helpline', 'help', 'contact', 'support', '1950'],
+    answer: 'For any election related help call the National Voter Helpline at 1950 (toll-free). You can also email complaints at complaints.eci.gov.in. 📞'
   },
   {
     keywords: ['eci', 'election commission', 'who conducts'],
@@ -63,18 +82,6 @@ const KNOWLEDGE_BASE = [
   {
     keywords: ['code of conduct', 'mcc', 'model code'],
     answer: 'The Model Code of Conduct (MCC) is a set of guidelines for political parties and candidates during elections. It comes into effect when elections are announced and ensures free and fair elections. 📜'
-  },
-  {
-    keywords: ['moved', 'shifted', 'new city', 'change address'],
-    answer: 'If you moved cities you need to re-register at your new address. Submit Form 8A at voters.eci.gov.in to update your address on the Electoral Roll. 🏠'
-  },
-  {
-    keywords: ['lost', 'id card', 'duplicate', 'replacement'],
-    answer: 'If you lost your Voter ID apply for a duplicate at voters.eci.gov.in under the EPIC Reprint option. You can also use alternative documents like Aadhaar or Passport at the polling booth. 🪪'
-  },
-  {
-    keywords: ['helpline', 'help', 'contact', 'support', '1950'],
-    answer: 'For any election related help call the National Voter Helpline at 1950 (toll-free). You can also email complaints at complaints.eci.gov.in. 📞'
   },
   {
     keywords: ['secret', 'private', 'who knows', 'anonymous'],
